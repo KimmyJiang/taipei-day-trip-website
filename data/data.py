@@ -5,8 +5,8 @@ import mysql.connector
 
 def import_data(db):
     insert_data = '''
-    INSERT INTO tpe_att(attraction, mrt, type, description, address, traffic, photo)
-    VALUES (%s, %s, %s, %s, %s, %s, %s)
+    INSERT INTO tpe_att(name, category, description, address, transport, mrt, latitude, longitude, images)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
     '''
 
     with open("./taipei-attractions.json","r") as res:
@@ -14,26 +14,23 @@ def import_data(db):
 
         for i in data:
             
-            attraction = i["stitle"]
-
-            mrt = i["MRT"]
-
-            type = i["CAT2"]
-
+            name = i["stitle"]
+            category = i["CAT2"]
             description = i["xbody"]
-
             address = i["address"]
-
-            traffic = i["info"]
+            transport = i["info"]
+            mrt = i["MRT"]
+            latitude = i["latitude"]
+            longitude = i["longitude"]
 
             file = i["file"].split("http")
-            photo = ""
+            images = ""
             for j in range(len(file)):
                 file[j] = file[j].lower()
                 if "jpg" in file[j] or "png" in file[j]:
-                    photo = f"{photo}http{file[j]}, "
+                    images = f"{images}http{file[j]}, "
 
-            value = [attraction, mrt, type, description, address, traffic, photo]
+            value = [name, category, description, address, transport, mrt, latitude, longitude, images]
             cursor.execute(insert_data, value)
             db.commit()
 
