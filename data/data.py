@@ -39,8 +39,7 @@ if __name__ == "__main__":
     db = mysql.connector.connect(
         host = "localhost",
         user = "root",
-        password = "MySQL0126",
-        database = "travel",
+	database = "travel",
         auth_plugin = "mysql_native_password"
     )
     cursor = db.cursor()
