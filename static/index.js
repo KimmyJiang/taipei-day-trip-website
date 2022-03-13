@@ -13,15 +13,14 @@ function show_index(page,keyword){
         return nextpage;
     })
     .then(function(nextpage){
+        let timer = null;
         window.onscroll = function(){
             let footer = document.getElementById("footer");
+            clearTimeout(timer);
             if (window.scrollY + window.innerHeight > footer.offsetTop && nextpage ) {
-                if (!loadMore) {
-                    loadMore = true; 
-                    show_index(nextpage,keyword);
-                } else {
-                    loadMore = false;
-                }
+                timer = setTimeout(function(){
+                    show_index(nextpage,keyword);}
+                ,200);
             }
         }
     })
@@ -63,15 +62,3 @@ let loadMore = false;
 window.onload = function(){
     show_index(0,"");
 }
-
-
-
-
-
-
-
-
-
-
-
-
