@@ -13,6 +13,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 db_config = {
     "host" : "localhost",
     "user" : "root",
+	"password" : "MySQL0126",
     "database" : "travel",
     "auth_plugin" : "mysql_native_password"
 }
@@ -23,8 +24,6 @@ dbpool = MySQLConnectionPool(
                     pool_size=5
                     )
 
-mypool = dbpool.get_connection()
-cursor = mypool.cursor()
 
 
 ## Pages
@@ -54,6 +53,9 @@ def attractions():
 		WHERE name LIKE %s
 		LIMIT %s, %s ;
 	'''
+
+	mypool = dbpool.get_connection()
+	cursor = mypool.cursor()
 	query_data = [f"%{keyword}%", page*12, 12]
 	cursor.execute(query_attraction, query_data)
 	query_result = cursor.fetchall()
@@ -82,10 +84,16 @@ def attractions():
 				"images" : images
 				}
 				res.append(data)
+		cursor.close()
+		mypool.close()
 		return jsonify(nextPage=nextpage, data=res), 200, headers
-	except: 
+	except:
+		cursor.close()
+		mypool.close()
 		message = "伺服器內部錯誤"
 		return jsonify(error=True, message=message), 500, headers
+	
+	
 	
 @app.route("/api/attraction/<attractionID>")
 def attractionID(attractionID):
@@ -95,6 +103,10 @@ def attractionID(attractionID):
 	'''
 	id = int(attractionID)
 
+
+
+	mypool = dbpool.get_connection()
+	cursor = mypool.cursor()
 	cursor.execute(id_query_attraction,(id,))
 	id_query_result = cursor.fetchall()
 	headers = {"Accept": "application/json"}
@@ -115,15 +127,20 @@ def attractionID(attractionID):
 				"longitude" : id_query_result[0][8],
 				"images" : images
 			}
+			cursor.close()
+			mypool.close()
 			return jsonify(data=data), 200, headers
 		else:
+			cursor.close()
+			mypool.close()
 			message = "景點編號不正確"
 			return jsonify(error = True, message = message), 400, headers
 	except:
+		cursor.close()
+		mypool.close()
 		message = "伺服器內部錯誤"
 		return jsonify(error = True, message = message), 500, headers
 
 
 app.run(host="0.0.0.0", port=3000)
-cursor.close()
-mypool.close()
+
