@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>景點介紹</title>
+        <link rel="stylesheet" href="/static/attraction.css" type="text/css">
+    </head>
+    <body>
+        <script src="/static/attraction.js"></script>
+        <nav>
+            <a id="homepage">台北一日遊</a>
+            <a id="check">預定行程</a>
+            <a id="login">登入/註冊</a>
+        </nav>
+        <main>
+            <div id="album">
+                <div id="img"></div>
+                <div>
+                    <a class="change" id="left" onclick="photo_change(-1);">&lt;</a>
+                    <a class="change" id="right" onclick="photo_change(1);">&gt;</a>
+                    <div id="photo_btns">
+                    </div>
+                </div>
+            </div>
+            <div id="info">
+                <div id="name"></div>
+                <div id="cat"></div>
+                <div id="reserve">
+                    <div class="option">訂購導覽行程</div>
+                    <div id="quote">以此景點為中心的一日行程，帶您探索城市角落故事</div>
+                    <div class="option">選擇日期：
+                        <input id="date" type="date">
+                    </div>
+                    <div class="option">選擇時間：
+                        <input class="radio" type="radio" name="period" value="am" onclick="price()">上半天
+                        <input class="radio" type="radio" name="period" value="pm" onclick="price()">下半天
+                    </div>
+                    <div class="option">導覽費用：<span id="price">新台幣 2000 元</span></div>
+                    <button id="btn">開始預訂行程</button>
+                </div>
+            </div>
+            <div id="intro">
+                <div id="description"></div>
+                <div class="subtitle">景點地址：</div>
+                <div id="address"></div>
+                <div class="subtitle">交通方式：</div>
+                <div id="transport"></div>
+            </div>
+        </main>
+        <footer id="footer">
+            <div id="copyright">COPYRIGHT © 2021 台北一日遊</div>
+        </footer>
+
+    </body>
+</html>

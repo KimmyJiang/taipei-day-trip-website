@@ -13,7 +13,6 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 db_config = {
     "host" : "localhost",
     "user" : "root",
-	"password" : "MySQL0126",
     "database" : "travel",
     "auth_plugin" : "mysql_native_password"
 }
