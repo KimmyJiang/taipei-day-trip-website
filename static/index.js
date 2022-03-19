@@ -32,13 +32,14 @@ function show_data(){
         gallery.innerHTML = "<h3>查無景點相關資訊<h3>";
     }else{
         for (let i = 0 ; i < data_len ; i++){
+            let id = data[i].id;
             let img = data[i].images[0];
             let name = data[i].name;
             let mrt = data[i].mrt;
             let category = data[i].category;
 
             gallery.innerHTML += `
-            <div class="box">
+            <div class="box" onclick="link_page(${id})">
                 <img class="image" src="${img}"/>
                 <div class="name">${name}</div>
                 <div class="mrt">${mrt}</div>
@@ -47,6 +48,10 @@ function show_data(){
             `;
         }
     }
+}
+
+function link_page(id){
+    window.location.href = `attraction/${id}`;
 }
 
 function query_keyword(){
