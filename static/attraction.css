@@ -189,6 +189,10 @@ img {
     color: #666666;
 }
 
+input[type="radio"]{
+    accent-color: #448899;
+}
+
 #quote {
     padding-left: 20px;
     padding-right: 20px; 
