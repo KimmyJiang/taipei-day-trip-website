@@ -83,13 +83,7 @@ img {
     z-index: 2;
     width: 40px;
     height: 40px;
-    font-size: 36px;
-    font-weight: bold;
-    line-height: 39px;
     text-align: center;
-    color: #fff;
-    background-color: RGBA(0, 0, 0, .3);
-
 }
 
 #left {
@@ -121,10 +115,6 @@ img {
     margin-left: 6px;
     margin-right: 6px;
 }
-
-
-
-
 
 #info {
     flex: none;
