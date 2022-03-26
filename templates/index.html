@@ -8,18 +8,47 @@
     </head>
     <body>
         <script src="/static/index.js"></script>
+        <!-- dialog -->
+        <div>
+            <!-- 登入 -->
+            <div id="dialog_login" class="dialog">
+                <div class="dialog_header"></div>
+                <img class="dialog_close" onclick="close_dialog_login();" src="/static/material/icon_close.png">
+                <div class="dialog_title">登入會員帳號</div>
+                <input id="email" type="email" placeholder="輸入電子信箱">
+                <input id="pswd" type="password" placeholder="輸入密碼">
+                <button id="btn_signin" onclick="sign_in();">登入帳戶</button>
+                <div id="login_msg"></div>
+                <div class="dialog_link">還沒有帳戶？<a onclick="close_dialog_login();show_dialog_signup();">點此註冊</a></div>
+            </div>
+            <!-- 註冊 -->
+            <div id="dialog_signup" class="dialog">
+                <div class="dialog_header"></div>
+                <img class="dialog_close" onclick="close_dialog_signup();" src="/static/material/icon_close.png">
+                <div class="dialog_title">註冊會員帳號</div>
+                <input id="user" type="text" placeholder="輸入姓名">
+                <input id="new_email" type="email" placeholder="輸入電子信箱">
+                <input id="new_pswd" type="password" placeholder="輸入密碼">
+                <button id="btn_signup" onclick="sign_up()">註冊新帳戶</button>
+                <div id="signup_msg"></div>
+                <div class="dialog_link">已經有帳戶了？<a onclick="close_dialog_signup();show_dialog_login();">點此登入</a></div>
+            </div> 
+        </div>
+        <!-- nav -->
         <nav>
            <a id="homepage">台北一日遊</a>
            <a id="check">預定行程</a>
-           <a id="login">登入/註冊</a>
+           <a class="login_logout" id="login" onclick="show_dialog_login();">登入/註冊</a>
+           <a class="login_logout" id="logout" onclick="sign_out();">登出系統</a>
         </nav>
+        <!-- header -->
         <header>
             <div id="header">
                 <div id="title">輕鬆享受台北一日悠閒</div>
                 <div id="subtitle">探索每個角落，體驗城市的深度旅遊行程</div>
                 <div id="query">
-                    <div id="input"><input type="text" id="keyword" placeholder="輸入景點名稱查詢"></div>
-                    <button id="btn" onclick="javascript:query_keyword();"><img src="static/material/icon_search.png"></button>
+                    <input type="text" id="keyword" placeholder="輸入景點名稱查詢">
+                    <button id="btn" onclick="query_keyword();"><img src="static/material/icon_search.png"></button>
                 </div>
                 <div id="photo">
                     <img src="static/material/welcome 1.png">
@@ -29,15 +58,14 @@
                 </div>
             </div>
         </header>
-    
+        <!-- attractions gallery -->
         <main> 
             <div id="gallery">
             </div>
         </main>
+        <!-- footer -->
         <footer id="footer">
             <div id="copyright">COPYRIGHT © 2021 台北一日遊</div>
         </footer>
-
-
     </body>
 </html>

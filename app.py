@@ -1,12 +1,16 @@
-from email import header, message
 from flask import *
-import json
+from flask_jwt_extended import JWTManager, create_access_token
 from mysql.connector.pooling import MySQLConnectionPool
 
+jwt = JWTManager()
 app = Flask(__name__)
+jwt.init_app(app)
 app.config["JSON_AS_ASCII"] = False
 app.config["JSON_SORT_KEYS"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config['JWT_SECRET_KEY'] = "djio3g4gjo"
+app.secret_key="jfie3p3rjw"
+
 
 
 ## MySQL 
@@ -14,15 +18,16 @@ db_config = {
     "host" : "localhost",
     "user" : "root",
     "database" : "travel",
-    "auth_plugin" : "mysql_native_password"
+    "auth_plugin" : "mysql_native_password",
+	"buffered" : True
 }
+
 
 dbpool = MySQLConnectionPool(
                     **db_config,
                     pool_name="my_connection_pool",
                     pool_size=5
                     )
-
 
 
 ## Pages
@@ -91,9 +96,8 @@ def attractions():
 		mypool.close()
 		message = "伺服器內部錯誤"
 		return jsonify(error=True, message=message), 500, headers
-	
-	
-	
+
+
 @app.route("/api/attraction/<attractionID>")
 def attractionID(attractionID):
 	id_query_attraction = '''
@@ -102,14 +106,11 @@ def attractionID(attractionID):
 	'''
 	id = int(attractionID)
 
-
-
 	mypool = dbpool.get_connection()
 	cursor = mypool.cursor()
 	cursor.execute(id_query_attraction,(id,))
 	id_query_result = cursor.fetchall()
-	headers = {"Accept": "application/json"}
-	
+
 	try:
 		if len(id_query_result) == 1: 
 			images = id_query_result[0][9].split(", ")
@@ -126,19 +127,142 @@ def attractionID(attractionID):
 				"longitude" : id_query_result[0][8],
 				"images" : images
 			}
-			cursor.close()
-			mypool.close()
-			return jsonify(data=data), 200, headers
+			result = {"data":data}
+			code = 200
 		else:
-			cursor.close()
-			mypool.close()
-			message = "景點編號不正確"
-			return jsonify(error = True, message = message), 400, headers
+			result = {"error": True,"message":"景點編號不正確"}
+			code = 400
 	except:
+		result = {"error": True,"message":"伺服器內部錯誤"}
+		code = 500
+	finally:
 		cursor.close()
 		mypool.close()
-		message = "伺服器內部錯誤"
-		return jsonify(error = True, message = message), 500, headers
+		response = make_response(jsonify(result), code)
+		response.headers["Accept"] = "application/json"
+		return response
+
+
+@app.route("/api/user",methods=["GET"])
+def signin_info_api():
+	status = session.get("status","unlogin")
+	try:
+		if status == "login":
+			data = {
+				"id": session["id"],
+				"name": session["user"],
+				"email": session["email"]	
+			}
+		else:
+			raise
+	except:
+		data = None
+	finally:
+		response = make_response(jsonify(data=data), 200)
+		response.headers["Accept"] = "application/json"
+		return response
+
+
+@app.route("/api/user",methods=["POST"])
+def signup_api():
+	user_data = request.get_json()
+	name = user_data["name"]
+	email = user_data["email"]
+	password = user_data["password"]
+	mypool = dbpool.get_connection()
+	cursor = mypool.cursor()
+	try:
+		if name == "" or email == "" or password == "":
+			code = 400
+			result = {"error" : True, "message":"註冊失敗，資料不得為空"}
+		else: 
+			check_user = '''
+			SELECT  email
+			FROM member
+			WHERE email = %s ;
+			'''
+			cursor.execute(check_user,(email,))
+			check_result = cursor.fetchone()
+			
+			if check_result is None :
+				add_user = '''
+				INSERT INTO member ( name, email, password )
+				VALUES ( %s, %s, %s );
+				'''
+				cursor.execute(add_user,[name, email, password])
+				mypool.commit()
+				code = 200
+				result = {"ok" : True}
+			else:
+				code = 400
+				result = {"error" : True, "message":"註冊失敗，此 Email 已被註冊"}
+	except:
+		code = 500
+		result = {"error": True, "message":"伺服器內部錯誤"}
+	finally:
+		cursor.close()
+		mypool.close()
+		response = make_response(jsonify(result), code)
+		response.headers["Accept"] = "application/json"
+		return response
+
+
+@app.route("/api/user",methods=["PATCH"])
+def signin_api():
+	login_data = request.get_json()
+	email = login_data["email"]
+	password = login_data["password"]
+	mypool = dbpool.get_connection()
+	cursor = mypool.cursor()
+
+	try:
+		if email == "" or password =="":
+			code = 400
+			result = {"error":True, "message":"帳號或密碼不得為空白"}
+		else:
+			verify_user = '''
+				SELECT  id, name, email, password
+				FROM member
+				WHERE email = %s ;
+				'''
+			cursor.execute(verify_user,(email,))
+			verify_result = cursor.fetchone()
+			try:
+				pswd = verify_result[3]
+				if password == pswd:
+					code = 200
+					result = {"ok": True}
+					session["status"] = "login"
+					session["id"] = verify_result[0]
+					session["user"] = verify_result[1]
+					session["email"] = verify_result[2]
+				else:
+					raise
+			except:
+				session["status"] = "unlogin"
+				code = 400
+				result =  {"error":True, "message":"帳號或密碼錯誤"}
+	except:
+		code = 500
+		result =  {"error":True, "message":"伺服器內部錯誤"}
+	finally:
+		cursor.close()
+		mypool.close()
+		response = make_response(jsonify(result), code)
+		response.headers["Accept"] = "application/json"
+		return response
+
+
+@app.route("/api/user",methods=["DELETE"])
+def logout_api():
+	session["status"] = "unlogin"
+	session["id"] = ""
+	session["user"] = ""
+	session["email"] = ""
+
+	response = make_response(jsonify(ok=True), 200)
+	response.headers["Accept"] = "application/json"
+	return response
 
 
 app.run(host="0.0.0.0", port=3000)
