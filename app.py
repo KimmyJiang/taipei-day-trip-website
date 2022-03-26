@@ -1,14 +1,10 @@
 from flask import *
-from flask_jwt_extended import JWTManager, create_access_token
 from mysql.connector.pooling import MySQLConnectionPool
 
-jwt = JWTManager()
 app = Flask(__name__)
-jwt.init_app(app)
 app.config["JSON_AS_ASCII"] = False
 app.config["JSON_SORT_KEYS"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-app.config['JWT_SECRET_KEY'] = "djio3g4gjo"
 app.secret_key="jfie3p3rjw"
 
 
@@ -17,6 +13,7 @@ app.secret_key="jfie3p3rjw"
 db_config = {
     "host" : "localhost",
     "user" : "root",
+	"password" : "MySQL0126",
     "database" : "travel",
     "auth_plugin" : "mysql_native_password",
 	"buffered" : True
