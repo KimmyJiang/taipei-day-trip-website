@@ -4,19 +4,113 @@ body {
     font-family: 'Noto Sans TC', sans-serif;
     margin: 0px;
     background-color: #FFFFFF;
+}
+
+.dialog {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translate(-170px,0px);
+    width: 340px;
+    height: auto;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 60px #AAAAAA;
+    border-radius: 6px;
+    font-family: 'Noto Sans TC', sans-serif;
+    display: none;
+    z-index: 4;
+}
+
+.dialog > .dialog_header {
+    width: 340px;
+    height: 10px;
+    background: linear-gradient(270deg, #337788 0%, #66AABB 100%);
+    margin-bottom: 5px;
+}
+
+.dialog > .dialog_close {
+    position: absolute;
+    top: 27px;
+    right: 17px;  
+    cursor: pointer;             
+}
+
+.dialog > .dialog_title {
+    flex: none;
+    width: 340px;
+    text-align: center;
+    height: 27px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 24px;
+    color: #666666;
+}
+
+.dialog > input {
+    width: 310px;
+    height: 47px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 15px;
+    margin-right: 15px;
+    border: 1px solid #CCCCCC;
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 13px;
+    color: #666666;
+    padding: 15px; 
 
 }
 
-nav {
+.dialog > button {
+    width: 310px;
+    height: 47px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 15px;
+    margin-right: 15px;
+    background: #448899;
+    border-radius: 5px;
+    border: none;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 16px;
+    color: #FFFFFF;
+}
+
+.dialog > .dialog_link {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 13px;
+    color: #666666;
+}
+
+.dialog > a {
+    cursor: pointer; 
+}
+
+#nav {
+    width: 100%;
+    border-bottom: 1px solid rgba(224, 221, 221, 0.753);
+}
+
+#nav_2 {
     height: 54px;
     width: 1200px;
     margin-left: auto;
     margin-right: auto;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    align-items: center;
-    border-bottom: 1px solid rgb(228, 228, 228);
-    
+    align-items: center; 
 }
 
 #homepage {
@@ -40,14 +134,19 @@ nav {
     color: #666666   
 }
 
-#login {
+.login_logout {
     grid-column: 12/13;
     text-align: center;
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
     line-height: 13px;
-    color: #666666
+    color: #666666;
+    cursor: pointer;
+}
+
+#logout {
+    display: none;
 }
 
 main {
@@ -71,7 +170,7 @@ main {
     position: relative;
 }
 
-img {
+#img > img {
     width: 100%;
     aspect-ratio: 4/3;
     position: absolute;
@@ -84,6 +183,8 @@ img {
     width: 40px;
     height: 40px;
     text-align: center;
+    opacity: 0.6;
+
 }
 
 #left {
@@ -127,7 +228,6 @@ img {
     align-items: center;
     flex-direction: column;
     margin-bottom: 37px;
-
 }
 
 #name {
@@ -142,7 +242,6 @@ img {
     margin-top: 5px;
     margin-bottom: 5px;
     padding-left: 20px;
-
 }
 
 #cat {
@@ -157,7 +256,6 @@ img {
     margin-top: 10px;
     margin-bottom: 10px;
     padding-left: 20px;
-
 }
 
 #reserve {
@@ -189,7 +287,10 @@ img {
     color: #666666;
 }
 
-input[type="radio"]{
+.option > input[type="radio"]{
+    height: 22px;
+    width: 22px;
+    border: none;
     accent-color: #448899;
 }
 
@@ -203,7 +304,6 @@ input[type="radio"]{
     font-size: 16px;
     line-height: 20px;
     color: #666666;
-
 }
 
 #date {
@@ -217,7 +317,6 @@ input[type="radio"]{
     padding-left: 10px;
     padding-right: 10px;
     border: none;
-
 }
 
 #price {
@@ -226,7 +325,6 @@ input[type="radio"]{
     font-size: 16px;
     line-height: 13px;
     color: #666666;
-
 }
 
 #btn {
@@ -244,7 +342,6 @@ input[type="radio"]{
     background: #448899;
     border-radius: 5px;
     border: none;
-
 }
 
 #intro {
@@ -267,7 +364,7 @@ input[type="radio"]{
     font-size: 16px;
     line-height: 23px;
     color: #666666;
-    text-align:justify;
+    text-align: justify;
 }
 
 #address {
@@ -280,7 +377,7 @@ input[type="radio"]{
     font-size: 16px;
     line-height: 23px;
     color: #666666;
-    text-align:justify;
+    text-align: justify;
 }
 
 #transport {
@@ -293,7 +390,7 @@ input[type="radio"]{
     font-size: 16px;
     line-height: 23px;
     color: #666666;
-    text-align:justify;
+    text-align: justify;
 }
 
 .subtitle {
@@ -306,7 +403,7 @@ input[type="radio"]{
     font-size: 16px;
     line-height: 23px;
     color: #666666;
-    text-align:justify;
+    text-align: justify;
 }
 
 footer {
@@ -332,10 +429,11 @@ footer {
 }
 
 @media screen and (max-width: 1200px) {
-    nav {
+    #nav_2 {
         width: 100%;
         grid-template-columns: 2fr 1fr 1fr;
     }
+
     #homepage {
         grid-column: 1/2;
         padding-left: 20px;
@@ -345,7 +443,7 @@ footer {
         grid-column: 2/3;
     }
 
-    #login {
+    .login_logout {
         grid-column: 3/4;
     }
 
@@ -376,14 +474,13 @@ footer {
 
 }
 
+
 @media screen and (max-width: 900px) {
-    
     #img {
         width: 100%;
         height: auto;
         margin-bottom: 20px;
     }
-
 
     #info {
         width: 100%;

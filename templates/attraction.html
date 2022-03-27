@@ -8,12 +8,43 @@
     </head>
     <body>
         <script src="/static/attraction.js"></script>
-        <nav>
-            <a id="homepage">台北一日遊</a>
-            <a id="check">預定行程</a>
-            <a id="login">登入/註冊</a>
+        <!-- dialog -->
+        <div>
+            <!-- 登入 -->
+            <div id="dialog_login" class="dialog">
+                <div class="dialog_header"></div>
+                <img class="dialog_close" onclick="close_dialog_login()" src="/static/material/icon_close.png">
+                <div class="dialog_title">登入會員帳號</div>
+                <input id="email" type="email" placeholder="輸入電子信箱">
+                <input id="pswd" type="password" placeholder="輸入密碼">
+                <button id="btn_signin" onclick="sign_in()">登入帳戶</button>
+                <div id="login_msg"></div>
+                <div class="dialog_link">還沒有帳戶？<a onclick="close_dialog_login(),show_dialog_signup()">點此註冊</a></div>
+            </div>
+            <!-- 註冊 -->
+            <div id="dialog_signup" class="dialog">
+                <div class="dialog_header"></div>
+                <img class="dialog_close" onclick="close_dialog_signup()" src="/static/material/icon_close.png">
+                <div class="dialog_title">註冊會員帳號</div>
+                <input id="user" type="text" placeholder="輸入姓名">
+                <input id="new_email" type="email" placeholder="輸入電子信箱">
+                <input id="new_pswd" type="password" placeholder="輸入密碼">
+                <button id="btn_signup" onclick="sign_up()">註冊新帳戶</button>
+                <div id="signup_msg"></div>
+                <div class="dialog_link">已經有帳戶了？<a onclick="close_dialog_signup(),show_dialog_login()">點此登入</a></div>
+            </div> 
+        </div>
+        <!-- nav -->
+        <nav id="nav">
+            <div id="nav_2">
+                <a id="homepage">台北一日遊</a>
+                <a id="check">預定行程</a>
+                <a class="login_logout" id="login" onclick="show_dialog_login()">登入/註冊</a>
+                <a class="login_logout" id="logout" onclick="sign_out()">登出系統</a>
+            </div> 
         </nav>
         <main>
+            <!-- 景點圖片 -->
             <div id="album">
                 <div id="img"></div>
                 <div>
@@ -23,6 +54,7 @@
                     </div>
                 </div>
             </div>
+            <!-- 圖片右側資訊 -->
             <div id="info">
                 <div id="name"></div>
                 <div id="cat"></div>
@@ -40,6 +72,7 @@
                     <button id="btn">開始預訂行程</button>
                 </div>
             </div>
+            <!-- 下方詳細資訊 -->
             <div id="intro">
                 <div id="description"></div>
                 <div class="subtitle">景點地址：</div>
@@ -48,6 +81,7 @@
                 <div id="transport"></div>
             </div>
         </main>
+        <!-- footer -->
         <footer id="footer">
             <div id="copyright">COPYRIGHT © 2021 台北一日遊</div>
         </footer>
