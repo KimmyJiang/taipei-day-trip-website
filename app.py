@@ -1,5 +1,3 @@
-from unittest import result
-from urllib import response
 from flask import *
 from mysql.connector.pooling import MySQLConnectionPool
 
