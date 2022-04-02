@@ -1,3 +1,5 @@
+from unittest import result
+from urllib import response
 from flask import *
 from mysql.connector.pooling import MySQLConnectionPool
 
@@ -13,7 +15,6 @@ app.secret_key="jfie3p3rjw"
 db_config = {
     "host" : "localhost",
     "user" : "root",
-	"password" : "MySQL0126",
     "database" : "travel",
     "auth_plugin" : "mysql_native_password",
 	"buffered" : True
@@ -258,6 +259,105 @@ def logout_api():
 	session["email"] = ""
 
 	response = make_response(jsonify(ok=True), 200)
+	response.headers["Accept"] = "application/json"
+	return response
+
+
+@app.route("/api/booking", methods=["GET"])
+def booking_info():
+	attractionID = session.get("attractionId", None)
+	status = session.get("status","unlogin")
+	mypool = dbpool.get_connection()
+	cursor = mypool.cursor()
+
+	if status == "login":
+		if attractionID :
+			attraction_info = '''
+			SELECT name, address, images 
+			FROM tpe_att
+			WHERE id = %s
+			'''
+
+			cursor.execute(attraction_info,(attractionID,))
+			info = cursor.fetchone()
+
+			code = 200
+			result = {
+				"data" : {
+					"attraction":{
+					"id" : attractionID, 
+					"name" : info[0], 
+					"address" : info[1],
+					"image" : info[2].split(", ")[0]
+				},
+				"date" : session["date"],
+				"time" : session["time"],
+				"price" : session["price"]
+				}
+			}
+		else:
+			code = 200
+			result = {"data" : None}
+	else:
+		code = 403
+		result = {"error": True, "message":"請先登入系統"}
+	
+	cursor.close()
+	mypool.close()
+	response = make_response(jsonify(result), code)
+	response.headers["Accept"] = "application/json"
+	return response
+	
+
+@app.route("/api/booking", methods=["POST"])
+def new_booking():
+	booking_info = request.get_json()
+	status = session.get("status","unlogin")
+	attractionId = booking_info["attractionId"]
+	date = booking_info["date"]
+	time = booking_info["time"]
+	price = booking_info["price"]
+
+	try:
+		if status == "login":
+			if attractionId == None or date == None or time == None or price == None :
+				code = 400
+				result = {"error" : True, "message":"資料不得為空"}
+			else:
+				session["attractionId"] = attractionId
+				session["date"] = date
+				session["time"] = time
+				session["price"] = price
+				code = 200
+				result = {"ok" : True}
+		else:
+			code = 403
+			result = {"error" : True, "message":"尚未登入系統"}
+	except:
+		code = 500
+		result = {"error": True, "message":"伺服器內部錯誤"}
+	finally:
+		response = make_response(jsonify(result), code)
+		response.headers["Accept"] = "application/json"
+		return response
+
+
+@app.route("/api/booking", methods=["DELETE"])
+def delete_booking():
+	status = session.get("status","unlogin")
+
+	if status == "login":
+		session["attractionId"] = None
+		session["date"] = None
+		session["time"] = None
+		session["price"] = None
+		code = 200
+		result = {"ok" : True}
+	else:
+		code = 403
+		result = {"error" : True, "message" : "尚未登入系統"}
+	
+	response = make_response(jsonify(result), code)
 	response.headers["Accept"] = "application/json"
 	return response
 
