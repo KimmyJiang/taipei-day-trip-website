@@ -38,7 +38,7 @@
         <nav id="nav">
             <div id="nav_2">
                 <a id="homepage">台北一日遊</a>
-                <a id="check">預定行程</a>
+                <a id="check" onclick="show_booking()">預定行程</a>
                 <a class="login_logout" id="login" onclick="show_dialog_login()">登入/註冊</a>
                 <a class="login_logout" id="logout" onclick="sign_out()">登出系統</a>
             </div> 
@@ -65,11 +65,11 @@
                         <input id="date" type="date">
                     </div>
                     <div class="option">選擇時間：
-                        <input type="radio" name="period" value="am" onclick="price()">上半天
-                        <input type="radio" name="period" value="pm" onclick="price()">下半天
+                        <input type="radio" name="period" onclick="price()">上半天
+                        <input type="radio" name="period" onclick="price()">下半天
                     </div>
                     <div class="option">導覽費用：<span id="price">新台幣 2000 元</span></div>
-                    <button id="btn">開始預訂行程</button>
+                    <button id="btn" onclick="booking();">開始預訂行程</button>
                 </div>
             </div>
             <!-- 下方詳細資訊 -->
@@ -85,6 +85,5 @@
         <footer id="footer">
             <div id="copyright">COPYRIGHT © 2021 台北一日遊</div>
         </footer>
-
     </body>
 </html>

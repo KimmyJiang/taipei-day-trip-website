@@ -190,6 +190,21 @@ function sign_out(){
     })
 }
 
+// 預定行程 button
+function show_booking(){
+    let url = "/api/user";
+    fetch(url)
+    .then(function(response){
+        return response.json();
+    }).then(function(res){
+        if (res.data){
+            window.location.href = "/booking";
+        } else{
+            show_dialog_login();
+        }
+    })
+}
+
 
 let keywordInput = document.querySelector("#keyword");
 let loadMore = false;
