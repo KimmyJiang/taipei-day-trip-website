@@ -448,6 +448,12 @@ def create_orders():
 							}
 						}
 					}
+					
+					session["attractionId"] = None
+					session["date"] = None
+					session["time"] = None
+					session["price"] = None
+					
 				elif tp_res["status"] == 1:
 					code = 200
 					result = {
