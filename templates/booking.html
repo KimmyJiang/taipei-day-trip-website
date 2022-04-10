@@ -64,21 +64,28 @@
             </div>
             <div class="main_box" id="user_info">
                 <div class="title">您的聯絡資訊</div>
-                <div class="contact_item">聯絡姓名：<input type="text"></div>
-                <div class="contact_item">連絡信箱：<input type="email"></div>
-                <div class="contact_item">手機號碼：<input type="tel"></div>
+                <div class="contact_item">聯絡姓名：<input type="text" id="contact_user"></div>
+                <div class="contact_item">連絡信箱：<input type="email" id="contact_email"></div>
+                <div class="contact_item">手機號碼：<input type="tel" id="contact_phone"></div>
                 <div id="contact_remind">請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
             </div>
             <div class="main_box" id="card_info">
                 <div class="title">信用卡付款資訊</div>
-                <div class="credit_item">卡片號碼：<input type="cc-number" placeholder="**** **** **** ****"></div>
-                <div class="credit_item">過期時間：<input type="cc-exp" placeholder="MM / YY"></div>
-                <div class="credit_item">驗證密碼：<input type="cc-csc" placeholder="CVV"></div>
+                    <div class="credit_item">
+                        <span>卡片號碼：</span><div class="tpfield" id="card-number"></div>
+                    </div>
+                    <div class="credit_item">
+                        <span>過期時間：</span><div class="tpfield" id="card-expiration-date"></div>
+                    </div>
+                    <div class="credit_item">
+                        <span>驗證密碼：</span><div class="tpfield" id="card-ccv"></div>
+                    </div> 
+                </div>
             </div>
             <div class="main_box" id="total_info">
                 <div class="summary">
                     <div id="total">總價：新台幣 2000 元</div>
-                    <button id="pay_btn">確認訂購並付款</button>
+                    <button id="pay_btn" onclick="get_prime()">確認訂購並付款</button>
                 </div> 
             </div>
         </main>
@@ -86,6 +93,8 @@
         <footer id="footer">
             <div id="copyright">COPYRIGHT © 2021 台北一日遊</div>
         </footer>
-        <script src="/static/booking.js"></script>
     </body>
+
+<script src="https://js.tappaysdk.com/tpdirect/v5.8.0"></script>
+<script src="/static/booking.js"></script>
 </html>

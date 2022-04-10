@@ -1,5 +1,11 @@
 from flask import *
 from mysql.connector.pooling import MySQLConnectionPool
+import os
+from dotenv import load_dotenv
+from datetime import datetime
+import requests
+import json
+
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
@@ -7,13 +13,14 @@ app.config["JSON_SORT_KEYS"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.secret_key="jfie3p3rjw"
 
-
+load_dotenv()
 
 ## MySQL 
 db_config = {
-    "host" : "localhost",
-    "user" : "root",
-    "database" : "travel",
+    "host" : os.getenv("mysql_host"),
+    "user" : os.getenv("mysql_user"),
+	"password" : os.getenv("mysql_password"),
+    "database" : os.getenv("database"),
     "auth_plugin" : "mysql_native_password",
 	"buffered" : True
 }
@@ -358,6 +365,166 @@ def delete_booking():
 	response = make_response(jsonify(result), code)
 	response.headers["Accept"] = "application/json"
 	return response
+
+
+@app.route("/api/orders", methods=["POST"])
+def create_orders():
+	status = session.get("status","unlogin")
+	order_info = request.get_json()
+	contact_name = order_info["order"]["contact"]["name"]
+	contact_email = order_info["order"]["contact"]["email"]
+	contact_phone = order_info["order"]["contact"]["phone"]
+	
+	try:
+		if status == "login":
+			if not contact_name or not contact_email or not contact_phone:
+				code = 400
+				result = {"error": True, "message":"請輸入完整的聯絡資料"}
+			else:
+				set_datetime = datetime.now().strftime("%Y%m%d%H%M%S")
+				order_number = set_datetime
+
+				add_orders = '''
+					INSERT INTO orders (number, price, trip, contact, status )
+					VALUES ( %(number)s, %(price)s, %(trip)s, %(contact)s, %(status)s )
+				'''
+
+				order_data = {
+					"number": order_number,
+					"price": order_info["order"]["price"],
+					"trip": json.dumps(order_info["order"]["trip"]),
+					"contact": json.dumps(order_info["order"]["contact"]),
+					"status": 1
+				}
+					
+				mypool = dbpool.get_connection()
+				cursor = mypool.cursor()
+				cursor.execute(add_orders, order_data)
+				mypool.commit()
+				cursor.close()
+				mypool.close()
+
+				tp_data = {
+					"prime": order_info["prime"],
+					"partner_key": os.getenv("partner_key"),
+					"merchant_id": "kimmy90241_CTBC",
+					"amount": order_info["order"]["price"],
+					"details": set_datetime,
+					"cardholder":{
+						"phone_number": contact_phone,
+						"name": contact_name,
+						"email": contact_email
+					}
+				}
+
+				url = "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
+				headers = {
+					"Content-Type": "application/json",
+					"x-api-key": os.getenv("partner_key")
+				}
+
+				tp_res = requests.post(url, headers = headers, json=tp_data).json()
+
+				if tp_res["status"] == 0:
+					update_order = '''
+					UPDATE orders
+					SET status = 0
+					WHERE number = %s
+					'''
+					mypool = dbpool.get_connection()
+					cursor = mypool.cursor()
+					cursor.execute(update_order, (order_number,)) 
+					mypool.commit()
+					cursor.close()
+					mypool.close()
+
+					code = 200
+					result = {
+						"data": {
+							"number": order_number,
+							"payment": {
+								"status": 0,
+								"message": "付款成功"
+							}
+						}
+					}
+					
+					session["attractionId"] = None
+					session["date"] = None
+					session["time"] = None
+					session["price"] = None
+					
+				elif tp_res["status"] == 1:
+					code = 200
+					result = {
+						"data": {
+							"number": order_number,
+							"payment": {
+								"status": 1,
+								"message": "付款失敗"
+							}
+						}
+					}
+				else:
+					code = 400
+					result = {"error": True, "message":"信用卡資料有誤，請重新輸入"}		
+		else:
+			code = 403
+			result = {"error": True, "message":"請先登入系統"}
+	except:
+		code = 500
+		result = {"error": True, "message":"伺服器內部錯誤"}
+	finally:
+		response = make_response(jsonify(result), code)
+		response.headers["Accept"] = "application/json"
+		return response
+
+
+@app.route("/api/order/<orderNumber>", methods=["GET"])
+def order_detail(orderNumber):
+	order_number = orderNumber
+	status = session.get("status","unlogin")
+
+	if status == "login":
+		mypool = dbpool.get_connection()
+		cursor = mypool.cursor()
+
+		query_order = '''
+		SELECT number, price, trip, contact, status
+		FROM orders
+		WHERE number = %s 
+		'''
+
+		cursor.execute(query_order, (order_number,))
+		order_info = cursor.fetchone()
+		cursor.close()
+		mypool.close()
+
+		if order_info:
+			result = {
+				"data":{
+					"number": order_info[0],
+					"price": order_info[1],
+					"trip":  json.loads(order_info[2]),
+					"contact": json.loads(order_info[3]),
+					"status": order_info[4]
+				}
+			}
+			code = 200
+		else: 
+			code = 200
+			result = {"data": None}
+	else:
+		code = 403
+		result = {"error": True, "message":"請先登入系統"}
+
+	response = make_response(jsonify(result), code)
+	response.headers["Accept"] = "application/json"
+	return response
+
+
+		
+		
 
 
 app.run(host="0.0.0.0", port=3000)

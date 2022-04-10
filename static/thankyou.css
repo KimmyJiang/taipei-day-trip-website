@@ -150,189 +150,31 @@ body {
 }
 
 main {
-    width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 
-.main_box {
-    width: 85%;
-    padding-top: 44px;
-    padding-bottom: 40px;
-    border-top: 1px solid #E8E8E8;
-}
-
-#booking {
-    width: 85%;
-    padding-top: 44px;
-    padding-bottom: 40px;
-}
-
-.title {
-    font-style: normal;
+#number{
     font-weight: 700;
-    font-size: 19px;
+    font-size: 18px;
     line-height: 20px;
     color: #666666;
-    margin-bottom: 24px;
-}
-
-#book_info {
-    margin-top: 35px;
-    display: flex;
-    
-}
-
-#image {
-    width: 266px;
-    aspect-ratio: 4/3;
-}
-
-
-#attraction_info {
-    flex: auto;
-    margin-left: 22px;
-}
-
-#delete {
-    flex: 30px;
-}
-
-.book_name {
-    margin-top: 5px;
-    margin-bottom: 10px;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 20px;
-    color: #448899;
-}
-
-.book_item {
-    margin-top: 20px;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 13px;
-    color: #666666;
-}
-
-.book_detail {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 13px;
-    color: #666666;
-}
-
-#no_data {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 13px;
-    color: #666666;
-    margin-top: 35px;
-    display: none;
-}
-
-.contact_item {
-    margin-top: 15px;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 13px;
-    color: #666666;
-}
-
-.contact_item > input {
-    width: 200px;
-    height: 38px;
-    padding: 10px;
-    background: #FFFFFF;
-    border: 1px solid #E8E8E8;
-    box-sizing: border-box;
-    border-radius: 5px;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 13px;
-    color: #000000;
-}
-
-#contact_remind {
-    margin-top: 27px;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 20px;
-    color: #666666;
-}
-
-.credit_item {
-    display: flex;
-    align-items: center;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    color: #666666; 
-    margin-top: 15px;
-}
-
-.credit_item > .tpfield {
-    width: 200px;
-    height: 38px;
-    background: #FFFFFF;
-    border: 1px solid #E8E8E8;
-    box-sizing: border-box;
-    border-radius: 5px;
-    padding: 10px;
-}
-
-.summary {
-    display: flex;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    margin-right: 110px;
-}
-
-#total {
-    flex: 100%;
-    text-align: end;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 13px;
-    color: #666666;
-    margin-bottom: 25px;
-
-}
-
-#pay_btn {
-    width: 173px;
-    height: 36px;
-    background: #448899;
-    border-radius: 5px;
-    border: none;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 19px;
-    line-height: 16px;
     text-align: center;
-    color: #FFFFFF;
+    padding-bottom: 20px;   
+}
+
+#message{
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 20px;
+    color: red;
+    text-align: center;
 }
 
 footer {
     position: relative;
     bottom: 0;
     width: 100%;
-    height: 104px;
     background: #757575;
 }
 
@@ -347,6 +189,7 @@ footer {
     line-height: 13px;
     color: #FFFFFF;
 }
+
 
 @media screen and (max-width: 1200px) {
     #nav_2 {
@@ -366,50 +209,5 @@ footer {
     .login_logout {
         grid-column: 3/4;
     }
-   
-    main {
-        width: 100%;
-    }
-
-    #booking, .main_box {
-        width: 90%;
-    }
-
-    #book_info {
-        width: 100%;
-    }
-    
-    #image {
-        width: 40%;
-    }
-
-    #attraction_info {
-        width: 50%;
-    }
-
-    .summary {
-        margin-right: 5px;
-    }
 }
 
-@media screen and (max-width: 600px) {
-
-    #book_info {
-        flex-wrap: wrap;
-        padding-bottom: 30px;
-    }
-
-    #image { 
-        width: 100%;
-    }
-
-    #attraction_info {
-        width: 100%;
-    }
-
-    #delete {
-       position: absolute;
-       right: 10px;
-    }
-
-}

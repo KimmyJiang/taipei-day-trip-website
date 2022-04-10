@@ -162,6 +162,7 @@ function booking_content(){
         if (res.data == null){
             no_booking();
         } else {
+            booking_data = res.data;
             let name = res.data.attraction.name;
             let address = res.data.attraction.address;
             let photo = res.data.attraction.image;
@@ -218,19 +219,129 @@ function no_booking(){
     footer.style.height = `${height}px`;
 }
 
+function TP_set(){
+    TPDirect.setupSDK(124001, "app_BlG6jWFXxJD1N0vZvCMnwINpZVU6NhrsfJ1RxMyM1f47BkRoKNfQorwzBP8B", "sandbox")
+    TPDirect.card.setup({
+        fields: {
+            number: {
+                element: "#card-number",
+                placeholder: "**** **** **** ***"
+            },
+            expirationDate: {
+                element: "#card-expiration-date",
+                placeholder: "MM / YY"
+            },
+            ccv: {
+                element: "#card-ccv",
+                placeholder: "ccv"
+            }
+        },
+        styles: {
+            "input": {
+                "color": "gray"
+            },
+            "input.ccv": {
+                "font-size": "16px"
+            },
+            "input.expiration-date": {
+                "font-size": "16px"
+            },
+            "input.card-number": {
+                "font-size": "16px"
+            },
+            ":focus": {
+                "color": "black"
+            },
+            ".valid": {
+                "color": "green"
+            },
+            ".invalid": {
+                "color": "red"
+            }
+        }
+})
+}
+
+
+TPDirect.card.onUpdate(function(Update){
+    let pay_btn = document.querySelector("#pay_btn");
+    if (Update.canGetPrime){
+        pay_btn.removeAttribute("disabled");
+    } else {
+        pay_btn.setAttribute("disabled",true)
+    }
+
+})
+
+
+function get_prime() {
+    TPDirect.card.getPrime(function (result) {
+        if (result.status === 0) {
+            let data = {
+                "prime": result.card.prime,
+                "order": {
+                    "price": booking_data.price,
+                    "trip": {
+                        "attraction": {
+                            "id": booking_data.attraction.id,
+                            "name": booking_data.attraction.name,
+                            "address": booking_data.attraction.address,
+                            "image": booking_data.attraction.image
+                        },
+                    "date": booking_data.date,
+                    "time": booking_data.time
+                    },
+                    "contact": {
+                    "name": document.querySelector("#contact_user").value,
+                    "email": document.querySelector("#contact_email").value,
+                    "phone": document.querySelector("#contact_phone").value
+                    }
+                }
+            }
+            
+            fetch("/api/orders",{
+                method: "POST",
+                headers : new Headers ({
+                    "Content-Type": "application/json"
+                }),
+                body : JSON.stringify(data)
+            }).then(function(response){
+                return response.json();
+            }).then(function(res){
+                if (res.error){
+                    alert(res.message);
+                }
+                else{
+                    if(res.data.payment.status === 0 ){
+                        window.location.href = `/thankyou?number=${res.data.number}`;
+                    } else {
+                        alert("付款失敗，請重新下訂");
+                    }
+                }
+            })
+
+        } else{
+            alert("信用卡輸入錯誤，請重新確認資訊");
+        }
+        
+    })
+}
 
 let dialog_login;
 let dialog_signup;
 let login;
 let logout;
+let booking_data = null;
 
 
 // 頁面載入執行動作
 window.onload = function(){
     signin_check();
     signin_info(); 
+    TP_set();
     dialog_login = document.getElementById("dialog_login");
     dialog_signup = document.getElementById("dialog_signup");
     login = document.getElementById("login"); 
     logout = document.getElementById("logout"); 
 }
+
