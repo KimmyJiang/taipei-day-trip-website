@@ -263,6 +263,17 @@ function TP_set(){
 }
 
 
+TPDirect.card.onUpdate(function(Update){
+    let pay_btn = document.querySelector("#pay_btn");
+    if (Update.canGetPrime){
+        pay_btn.removeAttribute("disabled");
+    } else {
+        pay_btn.setAttribute("disabled",true)
+    }
+
+})
+
+
 function get_prime() {
     TPDirect.card.getPrime(function (result) {
         if (result.status === 0) {
