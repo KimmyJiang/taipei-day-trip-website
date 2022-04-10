@@ -156,6 +156,10 @@ function order_status(order_number){
     }).then(function(res){
         let number = document.querySelector("#number");
         let message = document.querySelector("#message");
+        let footer = document.querySelector("#footer");
+        let height =  window.innerHeight - 215;
+        footer.style.height = `${height}px`;
+
 
         if (res.data == null){
             number.textContent= `訂單編號：${order_number}`;
