@@ -1,7 +1,17 @@
 import urllib.request as request
 import json
+from flask import Config
 import mysql.connector
+import os
+from dotenv import load_dotenv
 
+CONFIG = {
+    "host" : os.getenv("mysql_host"),
+    "user" : os.getenv("mysql_user"),
+    "password" : os.getenv("mysql_password"),
+    "database" : os.getenv("database"),
+    "auth_plugin" : "mysql_native_password"
+}
 
 def import_data(db):
     insert_data = '''
@@ -36,12 +46,9 @@ def import_data(db):
 
 
 if __name__ == "__main__":
-    db = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-	database = "travel",
-        auth_plugin = "mysql_native_password"
-    )
+    db = mysql.connector.connect(**CONFIG)
     cursor = db.cursor()
     import_data(db)
     cursor.close()
+
+
