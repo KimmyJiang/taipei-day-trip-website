@@ -114,7 +114,8 @@ nav {
     font-weight: 700;
     font-size: 30px;
     line-height: 34px;
-    color: #448899;   
+    color: #448899;
+    cursor: pointer;
 }
 
 #check {
@@ -124,7 +125,8 @@ nav {
     font-weight: 400;
     font-size: 16px;
     line-height: 13px;
-    color: #666666   
+    color: #666666;
+    cursor: pointer;   
 }
 
 .login_logout {
@@ -216,6 +218,7 @@ header {
     background-color: #448899;
     width: 60px;
     height: auto;
+    cursor: pointer;
 }
 
 #photo {
@@ -251,11 +254,17 @@ header {
    flex-wrap: wrap;
    border: 1px solid #E8E8E8;
    border-top: none;
+   cursor: pointer;
 }
+
 
 .image {
     width: 100%;
     aspect-ratio: 5/3;
+}
+
+.image:hover {
+    opacity: 0.75;
 }
 
 .name {

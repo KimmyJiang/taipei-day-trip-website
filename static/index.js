@@ -108,6 +108,10 @@ function signin_info(){
     })
 }
 
+// 台北一日遊
+function back_to_home(){
+    window.location.href = '/';
+}
 
 // 註冊帳號流程
 function sign_up(){
@@ -206,7 +210,6 @@ function show_booking(){
 }
 
 
-let keywordInput = document.querySelector("#keyword");
 let loadMore = false;
 let dialog_login;
 let dialog_signup;
