@@ -189,6 +189,13 @@ function sign_out(){
     })
 }
 
+
+// 台北一日遊
+function back_to_home(){
+    window.location.href = '/';
+}
+
+
 // 預定行程 button
 function show_booking(){
     fetch("/api/user")
@@ -207,12 +214,19 @@ function show_booking(){
 // 開始預定行程 button
 function booking(){
     let date = document.getElementById("date").value;
+    let select_date = new Date(date);
     let time;
     let price;
     let period = document.getElementsByName("period");
+
     if (date == ""){
-        date = null;
+        return alert("請選擇日期");
     }
+
+    if (Date.now() > select_date){
+        return alert("日期選擇錯誤，請再次確認日期");
+    }
+
     if (period[0].checked){
         time = "morning";
         price = 2000;
@@ -220,8 +234,7 @@ function booking(){
         time = "afternoon";
         price = 2500;
     } else {
-        time = null;
-        price = null;
+        return alert("請選擇時間");
     }
     
     let data = {

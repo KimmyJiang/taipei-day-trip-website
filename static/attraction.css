@@ -32,7 +32,7 @@ body {
     position: absolute;
     top: 27px;
     right: 17px;  
-    cursor: pointer;             
+    cursor: pointer;       
 }
 
 .dialog > .dialog_title {
@@ -121,7 +121,8 @@ body {
     font-weight: 700;
     font-size: 30px;
     line-height: 34px;
-    color: #448899;   
+    color: #448899;
+    cursor: pointer;   
 }
 
 #check {
@@ -131,7 +132,8 @@ body {
     font-weight: 400;
     font-size: 16px;
     line-height: 13px;
-    color: #666666   
+    color: #666666;
+    cursor: pointer;  
 }
 
 .login_logout {
@@ -143,10 +145,12 @@ body {
     line-height: 13px;
     color: #666666;
     cursor: pointer;
+    
 }
 
 #logout {
     display: none;
+    cursor: pointer;
 }
 
 main {
@@ -161,19 +165,28 @@ main {
 }
 
 #album {
-    flex: none;
     width: 540px;
     height: 406px;
-    margin-left: 15px;
-    margin-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 37px;
     position: relative;
+    overflow: hidden; 
+}
+
+#img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #img > img {
-    width: 100%;
-    aspect-ratio: 4/3;
-    position: absolute;
+    height: 100%;
 }
 
 .change {
@@ -188,10 +201,12 @@ main {
 
 #left {
     left: 5px;
+    cursor: pointer;
 }
 
 #right {
     right: 5px;
+    cursor: pointer;
 }  
 
 #photo_btns {
@@ -282,7 +297,7 @@ main {
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
-    line-height: 13px;
+    line-height: 16px;
     color: #666666;
 }
 
@@ -291,6 +306,7 @@ main {
     width: 22px;
     border: none;
     accent-color: #448899;
+    cursor: pointer;
 }
 
 #quote {
@@ -309,7 +325,6 @@ main {
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
-    line-height: 13px;
     color: #000000;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -341,6 +356,7 @@ main {
     background: #448899;
     border-radius: 5px;
     border: none;
+    cursor: pointer;
 }
 
 #intro {
@@ -450,9 +466,9 @@ footer {
         width: 100%;
     }
 
-    #img {
+    #album {
         width: 45%;
-        height: auto;
+        overflow: hidden;
     }
 
     #info {
@@ -473,11 +489,29 @@ footer {
 
 }
 
+@media screen and (max-width: 910px) {
 
-@media screen and (max-width: 900px) {
-    #img {
+    #quote {
+        font-size: 14px;
+
+    }
+
+    #date {
+        width: 120px;
+        padding-left: 10px;
+        padding-right: 10px; 
+
+    }
+    #btn {
+        margin-top: 0px;
+    }
+
+}
+
+
+@media screen and (max-width: 600px) {
+    #album {
         width: 90%;
-        height: auto;
         margin-bottom: 20px;
     }
 

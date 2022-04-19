@@ -133,6 +133,11 @@ function sign_out(){
     })
 }
 
+// 台北一日遊
+function back_to_home(){
+    window.location.href = '/';
+}
+
 
 // 預定行程 button
 function show_booking(){

@@ -1,4 +1,3 @@
-
 // 顯示登入視窗
 function show_dialog_login(){  
     dialog_login.style.display = "block";
@@ -32,6 +31,9 @@ function signin_info(){
         if (res.data){
             login.style.display = "none";
             logout.style.display = "block";
+            document.querySelector("#contact_user").value = res.data.name;
+            document.querySelector("#contact_email").value = res.data.email;
+        
         } else{
             logout.style.display = "none";
             login.style.display = "block";
@@ -121,6 +123,12 @@ function sign_out(){
 }
 
 
+// 台北一日遊
+function back_to_home(){
+    window.location.href = '/';
+}
+
+
 // 預定行程 button
 function show_booking(){
     let url = "/api/user";
@@ -182,8 +190,15 @@ function booking_content(){
                 document.getElementById("time").textContent = "早上 9 點到中午 12 點";
             } else {
                 document.getElementById("time").textContent = "下午 1 點到下午 4 點";
-            }   
+            }
         }
+        let loading = document.querySelector(".loading_box");
+        let main = document.querySelector("main");
+        let footer = document.querySelector("footer");
+        footer.style.position = "relative";
+        loading.style.display = "none";
+        main.style.display = "flex";
+        footer.style.display = "block";
     })
 }
 
@@ -263,17 +278,6 @@ function TP_set(){
 }
 
 
-TPDirect.card.onUpdate(function(Update){
-    let pay_btn = document.querySelector("#pay_btn");
-    if (Update.canGetPrime){
-        pay_btn.removeAttribute("disabled");
-    } else {
-        pay_btn.setAttribute("disabled",true)
-    }
-
-})
-
-
 function get_prime() {
     TPDirect.card.getPrime(function (result) {
         if (result.status === 0) {
@@ -332,6 +336,9 @@ let dialog_signup;
 let login;
 let logout;
 let booking_data = null;
+
+let pay_btn = document.querySelector("#pay_btn");
+pay_btn.addEventListener("click", get_prime);
 
 
 // 頁面載入執行動作
